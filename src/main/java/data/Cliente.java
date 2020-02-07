@@ -1,19 +1,20 @@
 package data;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public class Cliente {
 
     private String nome;
     private String cognome;
-    private LocalDateTime dataNascita;
+    private Date dataNascita;
     private String luogoNascita;
     private String residenza;
     private String email;
     private String numeroTelefono;
     private String idCliente;
 
-    public Cliente(String nome, String cognome, LocalDateTime dataNascita, String luogoNascita, String residenza, String email, String numeroTelefono) {
+    public Cliente(String nome, String cognome, Date dataNascita, String luogoNascita, String residenza, String email, String numeroTelefono) {
         this.nome = nome;
         this.cognome = cognome;
         this.dataNascita = dataNascita;
@@ -39,11 +40,11 @@ public class Cliente {
         this.cognome = cognome;
     }
 
-    public LocalDateTime getDataNascita() {
+    public Date getDataNascita() {
         return dataNascita;
     }
 
-    public void setDataNascita(LocalDateTime dataNascita) {
+    public void setDataNascita(Date dataNascita) {
         this.dataNascita = dataNascita;
     }
 

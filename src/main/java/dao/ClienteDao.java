@@ -6,34 +6,14 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-public class ClienteDao {
-
-    private static Connection con;
+public class ClienteDao extends DatabaseDao {
 
 
-    private static Connection getConnection() throws SQLException {
-        if (con == null) {
-            MysqlDataSource dataSource = new MysqlDataSource();
-
-            dataSource.setServerName("127.0.0.1");
-            dataSource.setPortNumber(3306);
-            dataSource.setUser("root");
-            dataSource.setPassword("root");
-            dataSource.setDatabaseName("biblioteca");
-
-            con = dataSource.getConnection();
-        }
-
-        return con;
-    }
-
-
-    public void insertCliente(String nome, String cognome, LocalDateTime data, String luogoNascita, String residenza, String email, String numeroTelefono) throws SQLException {
+    public void insertCliente(String nome, String cognome, Date data, String luogoNascita, String residenza, String email, String numeroTelefono) throws SQLException {
         PreparedStatement ps = getConnection().prepareStatement("INSERT INTO cliente(nome,  cognome,  data_nascita,  luogo_nascita,  residenza,  email, telefono) VALUES (?,?,?,?,?,?,?)");
         ps.setString(1, nome);
         ps.setString(2, cognome);
-        Timestamp dataNascita = Timestamp.valueOf(data);
-        ps.setTimestamp(3, dataNascita);
+        ps.setDate(3, data);
         ps.setString(4, luogoNascita);
         ps.setString(5, residenza);
         ps.setString(6, email);
@@ -62,6 +42,23 @@ public class ClienteDao {
     }
 
 
+
+    public void updateCliente(String nome, String cognome, Date data, String luogoNascita, String residenza, String email, String numeroTelefono,int idCliente) throws SQLException {
+        PreparedStatement ps = getConnection().prepareStatement("UPDATE cliente SET nome = ?,  cognome = ?,  data_nascita = ?,  luogo_nascita = ?,  residenza = ?,  email = ?, telefono = ? where id_cliente = ?");
+        ps.setString(1, nome);
+        ps.setString(2, cognome);
+        ps.setDate(3, data);
+        ps.setString(4, luogoNascita);
+        ps.setString(5, residenza);
+        ps.setString(6, email);
+        ps.setString(7, numeroTelefono);
+        ps.setInt(8, idCliente);
+
+        ps.executeUpdate();
+
+        ResultSet rs = ps.getGeneratedKeys();
+        rs.next();
+    }
 
 
 

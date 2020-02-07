@@ -1,20 +1,24 @@
 package data;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public class Libro {
 
     private String titolo;
     private String autore;
-    private String anno;
+    private Date anno;
     private String genere;
+    private String disponibile;
     private String idLibro;
 
-    public Libro(String titolo, String autore, String anno, String genere) {
+
+    public Libro(String titolo, String autore, Date anno, String genere, String disponibile) {
         this.titolo = titolo;
         this.autore = autore;
         this.anno = anno;
         this.genere = genere;
+        this.disponibile = disponibile;
     }
 
     public String getTitolo() {
@@ -34,11 +38,11 @@ public class Libro {
     }
 
 
-    public String getAnno() {
+    public Date getAnno() {
         return anno;
     }
 
-    public void setAnno(String anno) {
+    public void setAnno(Date anno) {
         this.anno = anno;
     }
 
@@ -56,5 +60,13 @@ public class Libro {
 
     public void setIdLibro(String idLibro) {
         this.idLibro = idLibro;
+    }
+
+    public String getDisponibile() {
+        return disponibile;
+    }
+
+    public void setDisponibile(String disponibile) {
+        this.disponibile = disponibile;
     }
 }

@@ -1,0 +1,45 @@
+USE `biblioteca`;
+
+CREATE TABLE `cliente` (
+	`id_cliente` INT(11) NOT NULL AUTO_INCREMENT,
+	`nome` VARCHAR(50) NOT NULL,
+	`cognome` VARCHAR(50) NOT NULL,
+    `data_nascita` DATETIME NOT NULL,
+    `luogo_nascita` VARCHAR(50) NOT NULL,
+    `residenza` VARCHAR(50) NOT NULL,
+    `email` VARCHAR(50) NOT NULL,
+    `telefono` VARCHAR(50) NOT NULL,
+	`data_insert` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`data_update` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (`id_utente`),
+	UNIQUE INDEX `email` (`email`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=InnoDB
+;
+
+CREATE TABLE `libro` (
+	`id_libro` INT(11) NOT NULL AUTO_INCREMENT,
+	`titolo` VARCHAR(50) NOT NULL,
+	`autore` VARCHAR(50) NOT NULL,
+    `anno` VARCHAR(50) NOT NULL,
+    `genere` VARCHAR(50) NOT NULL,
+	`data_insert` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`data_update` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (`id_libro`),
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=InnoDB
+;
+
+CREATE TABLE `prestito` (
+	`id_libro` INT(11) NOT NULL,
+	`id_cliente` INT(11) NOT NULL,
+	`data_prestito` DATETIME NOT NULL,
+	`data_insert` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`data_update` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (`id_libro`,`id_cliente`),
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=InnoDB
+;
