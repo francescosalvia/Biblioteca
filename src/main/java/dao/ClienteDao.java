@@ -60,6 +60,17 @@ public class ClienteDao extends DatabaseDao {
         rs.next();
     }
 
+    public void updateTelefonoResidenza(String variabile,String tipo) throws SQLException {
+        PreparedStatement ps = getConnection().prepareStatement("UPDATE cliente SET "+tipo+" = ? ");
+        ps.setString(1, variabile);
+
+
+        ps.executeUpdate();
+
+        ResultSet rs = ps.getGeneratedKeys();
+        rs.next();
+    }
+
 
 
 

@@ -20,6 +20,29 @@ public class Main {
 
             s.restituisciLibro();
 
+            s.modificaTelefonoResidenza();
+
+            /** STAMPE **/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         } catch (SQLException e) {
             log.error("SQLException errore ", e);
         }

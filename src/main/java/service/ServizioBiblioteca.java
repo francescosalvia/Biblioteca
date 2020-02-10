@@ -1,5 +1,8 @@
 package service;
 
+import com.google.i18n.phonenumbers.NumberParseException;
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.google.i18n.phonenumbers.Phonenumber;
 import dao.ClienteDao;
 import dao.LibroDao;
 import dao.PrenotazioneDao;
@@ -17,6 +20,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.Optional;
+import java.util.Scanner;
+
 
 public class ServizioBiblioteca {
 
@@ -25,6 +30,12 @@ public class ServizioBiblioteca {
     private static ClienteDao cliDao = new ClienteDao();
     private static LibroDao liDao = new LibroDao();
     private static PrenotazioneDao preDao = new PrenotazioneDao();
+
+
+    public boolean controlloEmail(String email) {
+        String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
+        return email.matches(regex);
+    }
 
 
     public void caricaCliente() throws SQLException {
@@ -36,12 +47,9 @@ public class ServizioBiblioteca {
             BufferedReader br = new BufferedReader(fr);
             String line;
 
-            int contatore = 0;
 
             while ((line = br.readLine()) != null) {
                 String[] details = line.split(";");
-
-                contatore++;
 
                 if (details.length == 7) {
 
@@ -55,22 +63,35 @@ public class ServizioBiblioteca {
                     String email = details[5];
                     String telefono = details[6];
 
-                    Optional<Integer> idCliente = cliDao.getIdCliente(email);
+                    PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
 
-                    if (idCliente.isPresent()) {
-                        cliDao.updateCliente(nome,cognome,sDate,luogoNascita,residenza,email,telefono, idCliente.get());
-                        log.info("Cliente aggiornato con successo");
-                    } else {
-                        cliDao.insertCliente(nome, cognome, sDate, luogoNascita, residenza, email, telefono);
-                        log.info("Cliente inserito con successo");
+                    Phonenumber.PhoneNumber number = phoneUtil.parse(telefono, "IT");
+
+                    if (phoneUtil.isValidNumber(number)) {
+
+                        telefono = phoneUtil.format(number, PhoneNumberUtil.PhoneNumberFormat.E164);
+
+                        log.info("Telefono verificato!");
+
+                        if (controlloEmail(email)) {
+                            log.info("Email verificata!");
+                            Optional<Integer> idCliente = cliDao.getIdCliente(email);
+
+                            if (idCliente.isPresent()) {
+                                cliDao.updateCliente(nome, cognome, sDate, luogoNascita, residenza, email, telefono, idCliente.get());
+                                log.info("Cliente aggiornato con successo");
+                            } else {
+                                cliDao.insertCliente(nome, cognome, sDate, luogoNascita, residenza, email, telefono);
+                                log.info("Cliente inserito con successo");
+                            }
+
+                        } // fine if controllo email
                     }
+                } // fine if details.lenght
+            } // fine while
 
-                }
-
-
-            }
-        } catch (IOException | ParseException e) {
-            log.error("IoException nel metodo caricaCliente  ", e);
+        } catch (IOException | ParseException | NumberParseException e) {
+            log.error(" errore nel metodo caricaCliente  ", e);
         }
     }
 
@@ -97,7 +118,7 @@ public class ServizioBiblioteca {
                     Optional<Integer> idLibro = liDao.getIdLibro(titolo, autore);
 
                     if (idLibro.isPresent()) {
-                        liDao.updateLibro(titolo,autore,data,genere,idLibro.get());  // disponibilità non la modifico per non influire su eventuali prestiti
+                        liDao.updateLibro(titolo, autore, data, genere, idLibro.get());  // disponibilità non la modifico per non influire su eventuali prestiti
                         log.info("Libro aggiornato con successo");
                     } else {
                         liDao.insertLibro(titolo, autore, data, genere, disponibile);
@@ -203,36 +224,47 @@ public class ServizioBiblioteca {
         }
 
 
-
     }
 
 
+    public void modificaTelefonoResidenza() throws SQLException {
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Inserire Telefono e Residenza. Se non si vuole modificare lasciare vuoto");
+
+        System.out.println("Telefono: ");
+        String telefono = scanner.nextLine();
+
+        System.out.println("Residenza: ");
+        String residenza = scanner.nextLine();
 
 
-
-
-
-
-
-
-
-
-
-
-
-}
-
-
-/*
-    public static LocalDateTime controlloDate(String date, int contatore) {
-        LocalDateTime localDate = null;
         try {
-            DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-            localDate = LocalDateTime.parse(date, formatter1);
-        } catch (DateTimeParseException e) {
-            log.error("C'è un errore alla con la data alla riga {}  Verrà sostituita con null", contatore, e);
+            if (!telefono.isBlank()) {
+
+                PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
+
+                Phonenumber.PhoneNumber number = phoneUtil.parse(telefono, "IT");
+
+                if (phoneUtil.isValidNumber(number)) {
+                    log.info("Telefono verificato!");
+                    telefono = phoneUtil.format(number, PhoneNumberUtil.PhoneNumberFormat.E164);
+
+                    cliDao.updateTelefonoResidenza(telefono, "telefono");
+                    log.info("modifica telefono eseguita");
+                }
+            }
+            if (!residenza.isBlank()) {
+                cliDao.updateTelefonoResidenza(residenza, "residenza");
+                log.info("modifica residenza eseguita");
+            }
+
+
+        } catch (NumberParseException e) {
+            log.error("IoException nel metodo caricaCliente  ", e);
+
         }
 
-        return localDate;
     }
-*/
+}
