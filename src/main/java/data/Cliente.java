@@ -87,5 +87,20 @@ public class Cliente {
     public void setIdCliente(String idCliente) {
         this.idCliente = idCliente;
     }
+
+
+    @Override
+    public String toString() {
+        return "Cliente { " +
+                "nome='" + nome + '\'' +
+                ", cognome='" + cognome + '\'' +
+                ", dataNascita=" + dataNascita +
+                ", luogoNascita='" + luogoNascita + '\'' +
+                ", residenza='" + residenza + '\'' +
+                ", email='" + email + '\'' +
+                ", numeroTelefono='" + numeroTelefono + '\'' +
+                ", idCliente='" + idCliente + '\'' +
+                " } ";
+    }
 }
 

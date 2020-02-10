@@ -1,12 +1,13 @@
 package data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Prestito {
 
     private String idUtente;
     private String idLibro;
-    private LocalDateTime dataPrestito;
+    private LocalDate dataPrestito;
 
 
     public String getIdUtente() {
@@ -25,11 +26,20 @@ public class Prestito {
         this.idLibro = idLibro;
     }
 
-    public LocalDateTime getDataPrestito() {
+    public LocalDate getDataPrestito() {
         return dataPrestito;
     }
 
-    public void setDataPrestito(LocalDateTime dataPrestito) {
+    public void setDataPrestito(LocalDate dataPrestito) {
         this.dataPrestito = dataPrestito;
+    }
+
+    @Override
+    public String toString() {
+        return "Prestito { " +
+                "idUtente='" + idUtente + '\'' +
+                ", idLibro='" + idLibro + '\'' +
+                ", dataPrestito=" + dataPrestito +
+                " } ";
     }
 }

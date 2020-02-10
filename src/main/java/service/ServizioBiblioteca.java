@@ -6,6 +6,9 @@ import com.google.i18n.phonenumbers.Phonenumber;
 import dao.ClienteDao;
 import dao.LibroDao;
 import dao.PrenotazioneDao;
+import data.Cliente;
+import data.Libro;
+import data.Prestito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,12 +16,16 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -220,7 +227,7 @@ public class ServizioBiblioteca {
             }
 
         } catch (IOException e) {
-            log.error("IoException nel metodo caricaCliente  ", e);
+            log.error("IoException nel metodo restituisciLibro  ", e);
         }
 
 
@@ -267,4 +274,92 @@ public class ServizioBiblioteca {
         }
 
     }
-}
+
+
+    public void checkPrenotazioni() throws SQLException{
+
+        String file = "C:\\Users\\francesco.salvia\\Desktop\\BIBLIOTECA\\checkPrestiti.txt";
+
+        LocalDate dataOggi = LocalDate.now();
+        LocalDate dataPrestito = null;
+
+        try {
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+
+            while ((line = br.readLine()) != null) {
+
+                String[] details = line.split(";");
+
+                if (details.length == 3) {
+                    String titolo = details[0];
+                    String autore = details[1];
+                    String email = details[2];
+
+                    Optional<Integer> idCliente = cliDao.getIdCliente(email);
+                    if (idCliente.isPresent()) {
+                        String disponibile = "false";
+                        Optional<Integer> idLibro = liDao.getIdLibroDisponibile(titolo, autore, disponibile);
+                        if (idLibro.isPresent()) {
+                            int idCliente2 = idCliente.get();
+                            int idLibro2 = idLibro.get();
+
+                            Optional<Timestamp> dataFromGet = preDao.getDataPrestito(idLibro2,idCliente2);
+
+                            if (dataFromGet.isPresent()){
+                                dataPrestito = dataFromGet.get().toLocalDateTime().toLocalDate();
+                            }
+
+                            if (dataPrestito != null){
+                                long days = ChronoUnit.DAYS.between(dataPrestito, dataOggi);
+
+                                if (days > 30)
+                                {
+                                    log.warn("Il prestito supera i 30 giorni");
+                                } else {
+                                    log.info("Il prestito non supera i 30 giorni");
+                                }
+
+                            }
+                        }
+                    }
+
+                }
+
+            }
+
+
+        } catch (IOException e) {
+            log.error("IoException nel metodo caricaCliente  ", e);
+        }
+
+    }
+
+    public List<Cliente> trovaClienti() throws SQLException{
+        log.info("Metodo trovaClienti");
+        return cliDao.getClienti();
+    }
+
+    public List<Libro> trovaLibri() throws SQLException{
+        log.info("Metodo trova libri");
+        return liDao.getLibro();
+    }
+
+    public List<Prestito> trovaPrestiti() throws SQLException{
+        log.info("Metodo trova prestiti");
+        return preDao.getPrestito();
+    }
+
+
+
+
+    }
+
+
+
+
+
+
+
+

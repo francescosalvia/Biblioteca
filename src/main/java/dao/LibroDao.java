@@ -1,9 +1,10 @@
 package dao;
 
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
+import data.Libro;
 
 import java.sql.*;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class LibroDao  extends  DatabaseDao {
@@ -94,6 +95,36 @@ public class LibroDao  extends  DatabaseDao {
 
 
         }
+
+
+    public List<Libro> getLibro() throws SQLException {
+
+        List<Libro> libri = new ArrayList<>();
+
+        PreparedStatement ps = getConnection().prepareStatement("SELECT * FROM libro");
+
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+
+            String idLibro = rs.getString("id_libro");
+            String titolo = rs.getString("titolo");
+            String autore = rs.getString("autore");
+            int anno = rs.getInt("anno");
+            String genere = rs.getString("genere");
+            String disponibile = rs.getString("disponibile");
+
+
+            Libro libro = new Libro(titolo,autore,anno,genere,disponibile);
+            libro.setIdLibro(idLibro);
+            libri.add(libro);
+        }
+
+
+        return libri;
+
+
+    }
 
 
 

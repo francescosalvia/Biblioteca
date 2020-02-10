@@ -1,10 +1,16 @@
 package dao;
 
+import data.Prestito;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class PrenotazioneDao extends DatabaseDao {
 
@@ -32,9 +38,55 @@ public class PrenotazioneDao extends DatabaseDao {
         ResultSet rs = ps.getGeneratedKeys();
         rs.next();
 
+    }
 
+    public Optional<Timestamp> getDataPrestito(int idLibro, int idCliente) throws SQLException {
+
+        Optional<Timestamp> dataPrestito = null;
+
+        PreparedStatement ps = getConnection().prepareStatement("SELECT data_insert from prestito where id_libro = ? and id_cliente = ? ");
+
+        ps.setInt(1,idLibro);
+        ps.setInt(2,idCliente);
+
+        ResultSet pr = ps.executeQuery();
+
+        while (pr.next()) {
+            dataPrestito = Optional.of(pr.getTimestamp("data_insert"));
+        }
+
+        return dataPrestito;
 
     }
+
+
+
+    public List<Prestito> getPrestito() throws SQLException {
+        List<Prestito> prestiti = new ArrayList<>();
+
+        PreparedStatement ps = getConnection().prepareStatement("SELECT * from prestito");
+
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+
+            String idUtente = rs.getString("id_cliente");
+            String idLibro = rs.getString("id_libro");
+            LocalDate dataPrestito = rs.getTimestamp("data_insert").toLocalDateTime().toLocalDate();
+
+            Prestito prestito = new Prestito();
+            prestito.setIdLibro(idLibro);
+            prestito.setIdUtente(idUtente);
+            prestito.setDataPrestito(dataPrestito);
+
+            prestiti.add(prestito);
+
+        }
+
+        return prestiti;
+
+    }
+
 
 
 }

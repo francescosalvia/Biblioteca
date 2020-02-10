@@ -7,13 +7,13 @@ public class Libro {
 
     private String titolo;
     private String autore;
-    private Date anno;
+    private int anno;
     private String genere;
     private String disponibile;
     private String idLibro;
 
 
-    public Libro(String titolo, String autore, Date anno, String genere, String disponibile) {
+    public Libro(String titolo, String autore, int anno, String genere, String disponibile) {
         this.titolo = titolo;
         this.autore = autore;
         this.anno = anno;
@@ -38,11 +38,11 @@ public class Libro {
     }
 
 
-    public Date getAnno() {
+    public int getAnno() {
         return anno;
     }
 
-    public void setAnno(Date anno) {
+    public void setAnno(int anno) {
         this.anno = anno;
     }
 
@@ -68,5 +68,17 @@ public class Libro {
 
     public void setDisponibile(String disponibile) {
         this.disponibile = disponibile;
+    }
+
+    @Override
+    public String toString() {
+        return "Libro { " +
+                "titolo='" + titolo + '\'' +
+                ", autore='" + autore + '\'' +
+                ", anno=" + anno +
+                ", genere='" + genere + '\'' +
+                ", disponibile='" + disponibile + '\'' +
+                ", idLibro='" + idLibro + '\'' +
+                " } ";
     }
 }

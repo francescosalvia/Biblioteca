@@ -1,9 +1,12 @@
 package dao;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
+import data.Cliente;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class ClienteDao extends DatabaseDao {
@@ -30,7 +33,7 @@ public class ClienteDao extends DatabaseDao {
         Optional<Integer> idCliente = Optional.empty();
         PreparedStatement ps = getConnection().prepareStatement("SELECT id_cliente FROM cliente where email = ?");
 
-        ps.setString(1,email);
+        ps.setString(1, email);
 
         ResultSet rs = ps.executeQuery();
 
@@ -42,8 +45,7 @@ public class ClienteDao extends DatabaseDao {
     }
 
 
-
-    public void updateCliente(String nome, String cognome, Date data, String luogoNascita, String residenza, String email, String numeroTelefono,int idCliente) throws SQLException {
+    public void updateCliente(String nome, String cognome, Date data, String luogoNascita, String residenza, String email, String numeroTelefono, int idCliente) throws SQLException {
         PreparedStatement ps = getConnection().prepareStatement("UPDATE cliente SET nome = ?,  cognome = ?,  data_nascita = ?,  luogo_nascita = ?,  residenza = ?,  email = ?, telefono = ? where id_cliente = ?");
         ps.setString(1, nome);
         ps.setString(2, cognome);
@@ -60,8 +62,8 @@ public class ClienteDao extends DatabaseDao {
         rs.next();
     }
 
-    public void updateTelefonoResidenza(String variabile,String tipo) throws SQLException {
-        PreparedStatement ps = getConnection().prepareStatement("UPDATE cliente SET "+tipo+" = ? ");
+    public void updateTelefonoResidenza(String variabile, String tipo) throws SQLException {
+        PreparedStatement ps = getConnection().prepareStatement("UPDATE cliente SET " + tipo + " = ? ");
         ps.setString(1, variabile);
 
 
@@ -72,8 +74,36 @@ public class ClienteDao extends DatabaseDao {
     }
 
 
+    public List<Cliente> getClienti() throws SQLException {
+
+        List<Cliente> clienti = new ArrayList<>();
+
+        PreparedStatement ps = getConnection().prepareStatement("SELECT * FROM cliente");
+
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+
+            String idCliente = rs.getString("id_cliente");
+            String nome = rs.getString("nome");
+            String cognome = rs.getString("cognome");
+            String luogoNascita = rs.getString("luogo_nascita");
+            Date date = rs.getDate("data_nascita");
+            String email = rs.getString("email");
+            String residenza = rs.getString("residenza");
+            String telefono = rs.getString("telefono");
 
 
+            Cliente cliente = new Cliente(nome, cognome, date, luogoNascita, residenza, email, telefono);
+            cliente.setIdCliente(idCliente);
+            clienti.add(cliente);
+        }
+
+
+        return clienti;
+
+
+    }
 
 
 }
