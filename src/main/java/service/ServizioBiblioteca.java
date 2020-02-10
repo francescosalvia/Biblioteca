@@ -24,10 +24,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 
 
 public class ServizioBiblioteca {
@@ -44,7 +41,7 @@ public class ServizioBiblioteca {
         return email.matches(regex);
     }
 
-
+/** PUNTO 2 **/
     public void caricaCliente() throws SQLException {
 
         String file = "C:\\Users\\francesco.salvia\\Desktop\\BIBLIOTECA\\clienti.txt";
@@ -102,6 +99,9 @@ public class ServizioBiblioteca {
         }
     }
 
+
+    /** PUNTO 1 **/
+
     public void caricaLibro() throws SQLException {
 
         String file = "C:\\Users\\francesco.salvia\\Desktop\\BIBLIOTECA\\libri.txt";
@@ -142,7 +142,7 @@ public class ServizioBiblioteca {
 
     }
 
-
+    /** PUNTO 6 **/
     public void addPrestito() throws SQLException {
 
         String file = "C:\\Users\\francesco.salvia\\Desktop\\BIBLIOTECA\\prestito.txt";
@@ -233,7 +233,7 @@ public class ServizioBiblioteca {
 
     }
 
-
+    /** PUNTO 3-5 **/
     public void modificaTelefonoResidenza() throws SQLException {
 
         Scanner scanner = new Scanner(System.in);
@@ -275,8 +275,8 @@ public class ServizioBiblioteca {
 
     }
 
-
-    public void checkPrenotazioni() throws SQLException{
+    /** PUNTO 8 **/
+    public void checkPrenotazioniPerUtente() throws SQLException{
 
         String file = "C:\\Users\\francesco.salvia\\Desktop\\BIBLIOTECA\\checkPrestiti.txt";
 
@@ -316,7 +316,7 @@ public class ServizioBiblioteca {
 
                                 if (days > 30)
                                 {
-                                    log.warn("Il prestito supera i 30 giorni");
+                                    log.warn("Il prestito per l'utente con id : {} supera i 30 giorni", idCliente2);
                                 } else {
                                     log.info("Il prestito non supera i 30 giorni");
                                 }
@@ -350,6 +350,71 @@ public class ServizioBiblioteca {
         log.info("Metodo trova prestiti");
         return preDao.getPrestito();
     }
+
+
+    /** PUNTO 7 **/
+    public void checkPrestitiScaduti() throws  SQLException{
+
+        List<Prestito> prestiti = preDao.getPrestito();
+        LocalDate dataOggi = LocalDate.now();
+
+        for (Prestito prestito : prestiti) {
+            LocalDate dataPrestito = prestito.getDataPrestito();
+
+            if (dataPrestito != null) {
+                long days = ChronoUnit.DAYS.between(dataPrestito, dataOggi);
+
+                if (days > 30) {
+                    log.warn("Il prestito per l'utente con id : {} supera i 30 giorni", prestito.getIdUtente());
+                } else {
+                    log.info("Il prestito non supera i 30 giorni");
+                }
+            }
+        }
+
+
+    }
+
+    /** PUNTO 9 **/
+    public List<Libro> getLibroPerAutore() throws SQLException {
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Inserisci L'autore");
+
+        String autore =  scanner.nextLine();
+
+        return liDao.getLibroPerAutore(autore);
+    }
+
+    /** PUNTO 10 **/
+    public List<Cliente> getClientiPerAutore() throws SQLException {
+
+        List<Cliente> clienti = new ArrayList<>();
+        List<Libro> libri = getLibroPerAutore();
+        List<Prestito> prestiti = new ArrayList<>();
+
+        for (int i = 0; i < libri.size(); i++)
+        {
+
+            Optional<Prestito> prestito = preDao.getPrestitoPerIdLibro( libri.get(i).getIdLibro());
+            if (prestito.isPresent()){
+                prestiti.add(prestito.get());
+            }
+        }
+
+        for (int i = 0; i < prestiti.size(); i++)
+        {
+
+            Optional<Cliente> cliente = cliDao.getClientiPerId(prestiti.get(i).getIdUtente());
+            if (cliente.isPresent()) {
+                clienti.add(cliente.get());
+            }
+        }
+
+        return clienti;
+    }
+
+
 
 
 

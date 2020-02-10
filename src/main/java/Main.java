@@ -30,7 +30,7 @@ public class Main {
 
             // s.modificaTelefonoResidenza();
 
-           // s.checkPrenotazioni();
+            s.checkPrenotazioniPerUtente();
 
             List<Cliente> clienti = s.trovaClienti();
 
@@ -50,7 +50,22 @@ public class Main {
                 System.out.println(p.toString());
             }
 
+            s.checkPrestitiScaduti();
 
+            List<Libro> libroPerAutore = s.getLibroPerAutore();
+
+            for (Libro l : libroPerAutore){
+                System.out.println(l.toString());
+            }
+
+            System.out.println("----------------");
+
+
+            List<Cliente> clienti1 = s.getClientiPerAutore();
+
+            for (Cliente c : clienti1){
+                System.out.println(c.toString());
+            }
 
         } catch (SQLException e) {
             log.error("SQLException errore ", e);

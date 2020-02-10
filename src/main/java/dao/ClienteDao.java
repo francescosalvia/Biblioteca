@@ -98,11 +98,35 @@ public class ClienteDao extends DatabaseDao {
             cliente.setIdCliente(idCliente);
             clienti.add(cliente);
         }
-
-
         return clienti;
+    }
+
+    public Optional<Cliente> getClientiPerId(String idCliente) throws SQLException {
+
+        Cliente cliente;
+        Optional<Cliente> cliente1 = null;
+
+        PreparedStatement ps = getConnection().prepareStatement("SELECT * FROM cliente where id_cliente = ?");
+        ps.setString(1,idCliente);
+
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+
+            String nome = rs.getString("nome");
+            String cognome = rs.getString("cognome");
+            String luogoNascita = rs.getString("luogo_nascita");
+            Date date = rs.getDate("data_nascita");
+            String email = rs.getString("email");
+            String residenza = rs.getString("residenza");
+            String telefono = rs.getString("telefono");
 
 
+            cliente = new Cliente(nome, cognome, date, luogoNascita, residenza, email, telefono);
+            cliente.setIdCliente(idCliente);
+            cliente1 = Optional.of(cliente);
+        }
+        return cliente1;
     }
 
 

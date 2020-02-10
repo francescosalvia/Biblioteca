@@ -127,6 +127,36 @@ public class LibroDao  extends  DatabaseDao {
     }
 
 
+    public List<Libro> getLibroPerAutore(String autore) throws SQLException {
+
+        List<Libro> libri = new ArrayList<>();
+
+        PreparedStatement ps = getConnection().prepareStatement("SELECT * FROM libro where autore = ?");
+        ps.setString(1,autore);
+
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+
+            String idLibro = rs.getString("id_libro");
+            String titolo = rs.getString("titolo");
+            int anno = rs.getInt("anno");
+            String genere = rs.getString("genere");
+            String disponibile = rs.getString("disponibile");
+
+
+            Libro libro = new Libro(titolo,autore,anno,genere,disponibile);
+            libro.setIdLibro(idLibro);
+            libri.add(libro);
+        }
+
+
+        return libri;
+
+
+    }
+
+
 
 
 }

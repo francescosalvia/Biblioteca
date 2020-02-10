@@ -59,8 +59,6 @@ public class PrenotazioneDao extends DatabaseDao {
 
     }
 
-
-
     public List<Prestito> getPrestito() throws SQLException {
         List<Prestito> prestiti = new ArrayList<>();
 
@@ -84,6 +82,32 @@ public class PrenotazioneDao extends DatabaseDao {
         }
 
         return prestiti;
+
+    }
+
+    public Optional<Prestito> getPrestitoPerIdLibro(String idLibro) throws SQLException {
+        Prestito prestito = new Prestito();
+        Optional<Prestito> prestito1 = null;
+
+        PreparedStatement ps = getConnection().prepareStatement("SELECT * from prestito where id_libro = ?");
+        ps.setString(1,idLibro);
+
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+
+            String idUtente = rs.getString("id_cliente");
+            LocalDate dataPrestito = rs.getTimestamp("data_insert").toLocalDateTime().toLocalDate();
+
+            prestito.setIdLibro(idLibro);
+            prestito.setIdUtente(idUtente);
+            prestito.setDataPrestito(dataPrestito);
+
+            prestito1 = Optional.of(prestito);
+
+        }
+
+        return prestito1;
 
     }
 
