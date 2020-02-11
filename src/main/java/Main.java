@@ -120,7 +120,18 @@ public class Main {
             System.out.println("-----------------------");
             System.out.println("-----------------------");
 
-            s.classificaGenereLibriCliente();
+
+
+            Map<String,Map<String, Integer>> map3 = s.classificaGenereLibriCliente();
+
+            /*
+            Map<String, Integer> innerMap = new HashMap<>();
+            innerMap = map3.get();
+            for(String innerKey : innerMap.keySet()){
+                Integer innerValue = innerMap.get(innerKey);
+            }
+
+*/
 
         } catch (SQLException e) {
             log.error("SQLException errore ", e);

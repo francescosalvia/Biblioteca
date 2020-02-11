@@ -416,7 +416,9 @@ public class ServizioBiblioteca {
         return clienti;
     }
 
-
+    /**
+     * PUNTO 11
+     **/
     public  Map<Libro, Integer> classificaLibri() throws SQLException {
 
         List<Prestito> prestiti = preDao.getPrestito();
@@ -462,7 +464,9 @@ public class ServizioBiblioteca {
 
 
 
-
+    /**
+     * PUNTO 12
+     **/
     public Map<Cliente, Integer> classificaClienti() throws SQLException {
 
         List<Prestito> prestiti = preDao.getPrestito();
@@ -506,70 +510,9 @@ public class ServizioBiblioteca {
     }
 
 
-
-    public void classificaGenereLibriCliente() throws SQLException {
-
-
-
-        List<Prestito> prestiti = preDao.getPrestito();
-        List<Cliente> clienti = cliDao.getClienti();
-
-        Map<String, List<Prestito>> map = null;
-
-
-    for(int j = 0; j < clienti.size(); j++) {
-
-        int idCliente = clienti.get(j).getIdCliente();
-        map = new HashMap<>();
-        for (int i = 0; i < prestiti.size(); i++) {
-
-
-            if (idCliente == prestiti.get(i).getIdUtente()) {
-
-
-
-                String genere;
-                int idLibro = prestiti.get(i).getIdLibro();
-
-                Optional<String> genere2 = liDao.getGenerePerId(idLibro);
-
-                if (genere2.isPresent()) {
-
-                    genere = genere2.get();
-
-                    if (map.containsKey(genere)) {
-                        List<Prestito> prestitoBis = map.get(genere);
-                        prestitoBis.add(prestiti.get(i));
-                    } else {
-                        List<Prestito> prestitoBis = new ArrayList<>();
-                        prestitoBis.add(prestiti.get(i));
-                        map.put(genere, prestitoBis);
-                    }
-                }
-            }
-        }
-
-
-            Map<String, Integer> map2 = new HashMap<>();
-            map.forEach((k, v) -> map2.put(k, v.size()));
-
-
-            System.out.println(clienti.get(j).toString());
-            if (map.size() == 0){
-                System.out.println("Nessun libro letto");
-            } else {
-                System.out.println("genere + libri letti per genere");
-                map2.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).
-                        forEach(stringIntegerEntry -> System.out.println(stringIntegerEntry.getKey() + " -> " + stringIntegerEntry.getValue()));
-            }
-        }
-
-
-        log.info("Fine metodo classificaGenereLibriCliente ");
-
-    }
-
-
+    /**
+     * PUNTO 13
+     **/
 
     public Map<String, Integer> classificaGenereLibri() throws SQLException {
 
@@ -608,6 +551,78 @@ public class ServizioBiblioteca {
         log.info("Fine metodo classificaGenereLibri ");
 
         return map2;
+    }
+
+
+    /**
+     * PUNTO 14
+     **/
+
+    public Map<String,Map<String, Integer>> classificaGenereLibriCliente() throws SQLException {
+
+        List<Prestito> prestiti = preDao.getPrestito();
+        List<Cliente> clienti = cliDao.getClienti();
+
+        Map<String, List<Prestito>> map;
+
+        Map<String,Map<String, Integer>> map3 = new HashMap<>();
+
+        for(int j = 0; j < clienti.size(); j++) {
+
+            int idCliente = clienti.get(j).getIdCliente();
+            map = new HashMap<>();
+            for (int i = 0; i < prestiti.size(); i++) {
+
+
+                if (idCliente == prestiti.get(i).getIdUtente()) {
+
+
+
+                    String genere;
+                    int idLibro = prestiti.get(i).getIdLibro();
+
+                    Optional<String> genere2 = liDao.getGenerePerId(idLibro);
+
+                    if (genere2.isPresent()) {
+
+                        genere = genere2.get();
+
+                        if (map.containsKey(genere)) {
+                            List<Prestito> prestitoBis = map.get(genere);
+                            prestitoBis.add(prestiti.get(i));
+                        } else {
+                            List<Prestito> prestitoBis = new ArrayList<>();
+                            prestitoBis.add(prestiti.get(i));
+                            map.put(genere, prestitoBis);
+                        }
+                    }
+                }
+            }
+
+
+            Map<String, Integer> map2 = new HashMap<>();
+            map.forEach((k, v) -> map2.put(k, v.size()));
+            map2.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()));
+
+            /*
+            System.out.println(clienti.get(j).toString());
+            if (map.size() == 0){
+                System.out.println("Nessun libro letto");
+            } else {
+                System.out.println("genere + libri letti per genere");
+                map2.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).
+                        forEach(stringIntegerEntry -> System.out.println(stringIntegerEntry.getKey() + " -> " + stringIntegerEntry.getValue()));
+            }
+/*
+
+             */
+            map3.put(clienti.get(j).toString(),map2);
+
+        }
+
+        log.info("Fine metodo classificaGenereLibriCliente ");
+
+        return map3;
     }
 
 

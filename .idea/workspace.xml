@@ -3,24 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="dff04d64-9200-4a0b-b34d-a0f65c819941" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/delete.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/prestito.txt" beforeDir="false" afterPath="$PROJECT_DIR$/prestito.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/ClienteDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/ClienteDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/LibroDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/LibroDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/PrenotazioneDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/PrenotazioneDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/data/Cliente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data/Cliente.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/data/Libro.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data/Libro.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/data/Prestito.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data/Prestito.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/service/ServizioBiblioteca.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/ServizioBiblioteca.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dao/ClienteDao.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dao/ClienteDao.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dao/LibroDao.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dao/LibroDao.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/dao/PrenotazioneDao.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/dao/PrenotazioneDao.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/data/Cliente.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/data/Cliente.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/data/Libro.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/data/Libro.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/data/Prestito.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/data/Prestito.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/service/ServizioBiblioteca.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/service/ServizioBiblioteca.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
