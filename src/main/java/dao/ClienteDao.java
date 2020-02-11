@@ -84,7 +84,7 @@ public class ClienteDao extends DatabaseDao {
 
         while (rs.next()) {
 
-            String idCliente = rs.getString("id_cliente");
+            int idCliente = rs.getInt("id_cliente");
             String nome = rs.getString("nome");
             String cognome = rs.getString("cognome");
             String luogoNascita = rs.getString("luogo_nascita");
@@ -101,13 +101,13 @@ public class ClienteDao extends DatabaseDao {
         return clienti;
     }
 
-    public Optional<Cliente> getClientiPerId(String idCliente) throws SQLException {
+    public Optional<Cliente> getClientiPerId(int idCliente) throws SQLException {
 
         Cliente cliente;
         Optional<Cliente> cliente1 = null;
 
         PreparedStatement ps = getConnection().prepareStatement("SELECT * FROM cliente where id_cliente = ?");
-        ps.setString(1,idCliente);
+        ps.setInt(1,idCliente);
 
         ResultSet rs = ps.executeQuery();
 

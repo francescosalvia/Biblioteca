@@ -5,24 +5,25 @@ import java.time.LocalDateTime;
 
 public class Prestito {
 
-    private String idUtente;
-    private String idLibro;
+    private int idUtente;
+    private int idLibro;
     private LocalDate dataPrestito;
+    private String restituito;
 
 
-    public String getIdUtente() {
+    public int getIdUtente() {
         return idUtente;
     }
 
-    public void setIdUtente(String idUtente) {
+    public void setIdUtente(int idUtente) {
         this.idUtente = idUtente;
     }
 
-    public String getIdLibro() {
+    public int getIdLibro() {
         return idLibro;
     }
 
-    public void setIdLibro(String idLibro) {
+    public void setIdLibro(int idLibro) {
         this.idLibro = idLibro;
     }
 
@@ -34,12 +35,21 @@ public class Prestito {
         this.dataPrestito = dataPrestito;
     }
 
+    public String getRestituito() {
+        return restituito;
+    }
+
+    public void setRestituito(String restituito) {
+        this.restituito = restituito;
+    }
+
     @Override
     public String toString() {
         return "Prestito { " +
                 "idUtente='" + idUtente + '\'' +
                 ", idLibro='" + idLibro + '\'' +
                 ", dataPrestito=" + dataPrestito +
+                ", restituito='" + restituito + '\'' +
                 " } ";
     }
 }

@@ -107,7 +107,7 @@ public class LibroDao  extends  DatabaseDao {
 
         while (rs.next()) {
 
-            String idLibro = rs.getString("id_libro");
+            int idLibro = rs.getInt("id_libro");
             String titolo = rs.getString("titolo");
             String autore = rs.getString("autore");
             int anno = rs.getInt("anno");
@@ -138,7 +138,7 @@ public class LibroDao  extends  DatabaseDao {
 
         while (rs.next()) {
 
-            String idLibro = rs.getString("id_libro");
+            int idLibro = rs.getInt("id_libro");
             String titolo = rs.getString("titolo");
             int anno = rs.getInt("anno");
             String genere = rs.getString("genere");
@@ -156,7 +156,58 @@ public class LibroDao  extends  DatabaseDao {
 
     }
 
+    public Optional<Libro> getLibroPerID(int idLibro) throws SQLException {
 
+        Libro libro;
+        Optional<Libro> libro1 = null;
+
+        PreparedStatement ps = getConnection().prepareStatement("SELECT * FROM libro where id_libro = ?");
+        ps.setInt(1, idLibro);
+
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            String autore = rs.getString("autore");
+            String titolo = rs.getString("titolo");
+            int anno = rs.getInt("anno");
+            String genere = rs.getString("genere");
+            String disponibile = rs.getString("disponibile");
+
+
+            libro = new Libro(titolo,autore,anno,genere,disponibile);
+            libro.setIdLibro(idLibro);
+            libro1 = Optional.of(libro);
+
+        }
+
+
+        return libro1;
+
+
+    }
+
+
+    public Optional<String> getGenerePerId(int idLibro) throws SQLException {
+
+        Optional<String> genere1 = null;
+
+        PreparedStatement ps = getConnection().prepareStatement("SELECT genere FROM libro where id_libro = ?");
+        ps.setInt(1, idLibro);
+
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+
+            String genere = rs.getString("genere");
+            genere1 = Optional.of(genere);
+
+        }
+
+
+        return genere1;
+
+
+    }
 
 
 }

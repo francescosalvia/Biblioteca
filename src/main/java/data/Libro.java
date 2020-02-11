@@ -2,6 +2,7 @@ package data;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Objects;
 
 public class Libro {
 
@@ -10,7 +11,7 @@ public class Libro {
     private int anno;
     private String genere;
     private String disponibile;
-    private String idLibro;
+    private int idLibro;
 
 
     public Libro(String titolo, String autore, int anno, String genere, String disponibile) {
@@ -54,11 +55,11 @@ public class Libro {
         this.genere = genere;
     }
 
-    public String getIdLibro() {
+    public int getIdLibro() {
         return idLibro;
     }
 
-    public void setIdLibro(String idLibro) {
+    public void setIdLibro(int idLibro) {
         this.idLibro = idLibro;
     }
 
@@ -81,4 +82,24 @@ public class Libro {
                 ", idLibro='" + idLibro + '\'' +
                 " } ";
     }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Libro libro = (Libro) o;
+        return anno == libro.anno &&
+                idLibro == libro.idLibro &&
+                Objects.equals(titolo, libro.titolo) &&
+                Objects.equals(autore, libro.autore) &&
+                Objects.equals(genere, libro.genere) &&
+                Objects.equals(disponibile, libro.disponibile);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(titolo, autore, anno, genere, disponibile, idLibro);
+    }
 }
+

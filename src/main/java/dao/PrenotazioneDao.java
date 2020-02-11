@@ -14,12 +14,13 @@ import java.util.Optional;
 
 public class PrenotazioneDao extends DatabaseDao {
 
-    public void insertPrestito(int idLibro, int idCliente) throws SQLException {
+    public void insertPrestito(int idLibro, int idCliente, String restituito) throws SQLException {
 
-        PreparedStatement ps = getConnection().prepareStatement("INSERT INTO prestito(id_libro, id_cliente) VALUES (?,?)");
+        PreparedStatement ps = getConnection().prepareStatement("INSERT INTO prestito(id_libro, id_cliente, restituito) VALUES (?,?,?)");
 
         ps.setInt(1, idLibro);
         ps.setInt(2, idCliente);
+        ps.setString(3, restituito);
 
         ps.executeUpdate();
 
@@ -27,11 +28,11 @@ public class PrenotazioneDao extends DatabaseDao {
         rs.next();
     }
 
-    public void deletePrestito(int idLibro, int idCliente) throws SQLException {
-        PreparedStatement ps = getConnection().prepareStatement("DELETE from prestito where id_libro = ? and id_cliente = ? ");
-
-        ps.setInt(1,idLibro);
-        ps.setInt(2,idCliente);
+    public void updatePrestito(int idLibro, int idCliente,String restituito) throws SQLException {
+        PreparedStatement ps = getConnection().prepareStatement("UPDATE prestito SET restituito = ? where id_libro = ? and id_cliente = ? ");
+        ps.setString(1,restituito);
+        ps.setInt(2,idLibro);
+        ps.setInt(3,idCliente);
 
         ps.executeUpdate();
 
@@ -68,14 +69,16 @@ public class PrenotazioneDao extends DatabaseDao {
 
         while (rs.next()) {
 
-            String idUtente = rs.getString("id_cliente");
-            String idLibro = rs.getString("id_libro");
+            int  idUtente = rs.getInt("id_cliente");
+            int  idLibro = rs.getInt("id_libro");
             LocalDate dataPrestito = rs.getTimestamp("data_insert").toLocalDateTime().toLocalDate();
+            String restituito = rs.getString("restituito");
 
             Prestito prestito = new Prestito();
             prestito.setIdLibro(idLibro);
             prestito.setIdUtente(idUtente);
             prestito.setDataPrestito(dataPrestito);
+            prestito.setRestituito(restituito);
 
             prestiti.add(prestito);
 
@@ -85,18 +88,18 @@ public class PrenotazioneDao extends DatabaseDao {
 
     }
 
-    public Optional<Prestito> getPrestitoPerIdLibro(String idLibro) throws SQLException {
+    public Optional<Prestito> getPrestitoPerIdLibro(int idLibro) throws SQLException {
         Prestito prestito = new Prestito();
         Optional<Prestito> prestito1 = null;
 
         PreparedStatement ps = getConnection().prepareStatement("SELECT * from prestito where id_libro = ?");
-        ps.setString(1,idLibro);
+        ps.setInt(1,idLibro);
 
         ResultSet rs = ps.executeQuery();
 
         while (rs.next()) {
 
-            String idUtente = rs.getString("id_cliente");
+            int idUtente = rs.getInt("id_cliente");
             LocalDate dataPrestito = rs.getTimestamp("data_insert").toLocalDateTime().toLocalDate();
 
             prestito.setIdLibro(idLibro);
@@ -110,6 +113,30 @@ public class PrenotazioneDao extends DatabaseDao {
         return prestito1;
 
     }
+
+
+
+    public Optional<Integer> getConteggio(int idCliente, String restituito) throws SQLException {
+
+        Optional<Integer> conteggioPrestiti = null;
+
+        PreparedStatement ps = getConnection().prepareStatement("SELECT COUNT(DISTINCT id_libro) AS conteggio  FROM prestito where id_cliente = ? and restituito = ? ");
+
+        ps.setInt(1,idCliente);
+        ps.setString(2, restituito);
+
+        ResultSet pr = ps.executeQuery();
+
+        while (pr.next()) {
+            conteggioPrestiti = Optional.of(pr.getInt("conteggio"));
+        }
+
+        return conteggioPrestiti;
+
+    }
+
+
+
 
 
 

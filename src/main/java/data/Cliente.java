@@ -2,6 +2,7 @@ package data;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Objects;
 
 public class Cliente {
 
@@ -12,7 +13,7 @@ public class Cliente {
     private String residenza;
     private String email;
     private String numeroTelefono;
-    private String idCliente;
+    private int idCliente;
 
     public Cliente(String nome, String cognome, Date dataNascita, String luogoNascita, String residenza, String email, String numeroTelefono) {
         this.nome = nome;
@@ -80,14 +81,13 @@ public class Cliente {
         this.numeroTelefono = numeroTelefono;
     }
 
-    public String getIdCliente() {
+    public int getIdCliente() {
         return idCliente;
     }
 
-    public void setIdCliente(String idCliente) {
+    public void setIdCliente(int idCliente) {
         this.idCliente = idCliente;
     }
-
 
     @Override
     public String toString() {
@@ -101,6 +101,27 @@ public class Cliente {
                 ", numeroTelefono='" + numeroTelefono + '\'' +
                 ", idCliente='" + idCliente + '\'' +
                 " } ";
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Cliente cliente = (Cliente) o;
+        return idCliente == cliente.idCliente &&
+                nome.equals(cliente.nome) &&
+                cognome.equals(cliente.cognome) &&
+                dataNascita.equals(cliente.dataNascita) &&
+                luogoNascita.equals(cliente.luogoNascita) &&
+                residenza.equals(cliente.residenza) &&
+                email.equals(cliente.email) &&
+                numeroTelefono.equals(cliente.numeroTelefono);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nome, cognome, dataNascita, luogoNascita, residenza, email, numeroTelefono, idCliente);
     }
 }
 

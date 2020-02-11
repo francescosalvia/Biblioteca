@@ -1,5 +1,9 @@
 Lo Hobbit;Tolkien;1937;fantasy;true
-gdfhdsg;Luca;1950;fantasy;true
-sgfsgsgsg;Paolo;2000;fantasy;true
+gdfhdsg;Luca;1950;avventura;true
+sgfsgsgsg;Paolo;2000;horror;true
 ncnchtehda;Michele;1969;fantasy;true
-qrtyue;Federico;1970;fantasy;true
+qrtyue;Federico;1970;avventura;true
+bvvvvvvvvv;Luca;1980;romanzo;true
+ffffffffffff;Paolo;2002;horror;true
+ddddddddddd;Gigi;1969;romanzo;true
+sssssssss;piero;1970;letteratura;true
